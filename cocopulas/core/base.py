@@ -19,6 +19,7 @@ class BaseCopula(ABC):
     """
     @abstractmethod
     def fit(self, data: Array, x0: np.ndarray = None, method="simplex"):
+        # TODO implement parameter estimation
         raise NotImplementedError
 
     @abstractmethod
