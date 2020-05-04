@@ -36,9 +36,9 @@ class GumbelHougaard(ArchimedeanBaseCopula):
         a = self.alpha
         w = np.power(-np.log(u), a) + np.power(-np.log(v), a)
         m = np.power(u * v, -1)
-        n = np.power(np.log(u) * np.log(v), a -1)
-        l = np.power(w, 2/a - 2) + (a - 1) * np.power(w, 1/a - 2)
-        return m * n * l * self.cumulative_distribution_function(x)
+        n = np.power(np.log(u) * np.log(v), a - 1)
+        o = np.power(w, 2 / a - 2) + (a - 1) * np.power(w, 1 / a - 2)
+        return m * n * o * self.cumulative_distribution_function(x)
 
     def generator(self, x: Array) -> Union[float, np.ndarray]:
         return np.power(-np.log(x), self.alpha)

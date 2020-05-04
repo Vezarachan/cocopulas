@@ -8,11 +8,12 @@
 @Description: 
 """
 from enum import Enum
-from typing import Union, List
+from typing import Union, Dict, Optional
 import numpy as np
 from cocopulas.core.base import BaseCopula
 from cocopulas.core.errors import NotFittedError
 from cocopulas.core.types import Array
+from cocopulas.core.estimator import Estimator
 
 
 class EllipticalTypes(Enum):
@@ -29,8 +30,16 @@ class EllipticalBaseCopula(BaseCopula):
     def __init__(self, rho: float = None):
         self.rho = rho
 
-    def fit(self, data: Array, x0: np.ndarray = None, method="simplex"):
-        pass
+    @property
+    def params(self):
+        return self.rho
+
+    @params.setter
+    def params(self, value: float):
+        self.rho = value
+
+    def fit(self, data: Array, x0: np.ndarray = None, method="ml", optimset: Optional[Dict] = None):
+        return Estimator(self, data, x0, method=method, optimset=optimset).fit()
 
     def check_fit(self):
         if not self.rho:
@@ -68,5 +77,5 @@ class EllipticalBaseCopula(BaseCopula):
         return {
             "copula family": "Elliptical Family",
             "copula name": self.copula_name.name,
-            "param value": self.alpha
+            "param value": self.rho
         }

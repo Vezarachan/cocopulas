@@ -8,11 +8,12 @@
 @Description: 
 """
 from enum import Enum
-from typing import Union, List
+from typing import Union, List, Optional, Dict
 import numpy as np
 from cocopulas.core.base import BaseCopula
 from cocopulas.core.errors import NotFittedError
 from cocopulas.core.types import Array
+from cocopulas.core.estimator import Estimator
 
 
 class ArchimedeanTypes(Enum):
@@ -31,8 +32,16 @@ class ArchimedeanBaseCopula(BaseCopula):
     def __init__(self, alpha: float = None):
         self.alpha = alpha
 
-    def fit(self, data: Array, x0: np.ndarray = None, method="simplex"):
-        pass
+    @property
+    def params(self):
+        return self.alpha
+
+    @params.setter
+    def params(self, value: float):
+        self.alpha = value
+
+    def fit(self, data: Array, x0: np.ndarray = None, method="ml", optimset: Optional[Dict] = None):
+        return Estimator(self, data, x0, method=method, optimset=optimset).fit()
 
     def check_fit(self):
         if not self.alpha:
